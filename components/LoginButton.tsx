@@ -7,11 +7,12 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 interface LoginButtonProps {
   children: ReactNode;
   iconName: keyof typeof Ionicons.glyphMap;
+  onPress?: () => void;
 }
 
-const LoginButton = ({ children, iconName }: LoginButtonProps) => {
+const LoginButton = ({ children, iconName, onPress }: LoginButtonProps) => {
   return (
-    <TouchableOpacity style={styles.btnOutline}>
+    <TouchableOpacity style={styles.btnOutline} onPress={onPress}>
       <Ionicons name={iconName} style={defaultStyles.btnIcon} size={24} />
       <Text style={styles.btnOutlineText}>{children}</Text>
     </TouchableOpacity>
