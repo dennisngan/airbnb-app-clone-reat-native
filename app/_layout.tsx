@@ -37,7 +37,7 @@ if (!publishableKey) {
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from "expo-router";
 
 export const unstable_settings = {
@@ -111,6 +111,8 @@ function RootLayoutNav() {
         name="listing/[id]"
         options={{
           headerTitle: "",
+          headerTransparent: true,
+          headerBackTitleVisible: false,
         }}
       />
       <Stack.Screen
