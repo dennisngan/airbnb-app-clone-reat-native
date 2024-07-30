@@ -6,12 +6,12 @@ import React, { useRef, useState } from "react";
 import {
   Platform,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const categories = [
   {

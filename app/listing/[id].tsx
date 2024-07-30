@@ -25,7 +25,7 @@ const { width } = Dimensions.get("window");
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const listing: listing = (listingData as any[]).find(
+  const listing: ListingData = (listingData as any[]).find(
     (item) => item.id === id
   );
 

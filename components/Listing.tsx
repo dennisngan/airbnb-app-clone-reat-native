@@ -3,7 +3,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  FlatList,
   Image,
   StyleSheet,
   Text,
@@ -11,29 +10,33 @@ import {
   View,
   type ListRenderItem,
 } from "react-native";
-import Animated, {
-  FadeInRight,
-  FadeOutLeft
-} from "react-native-reanimated";
+import { FlatList } from "react-native-gesture-handler";
+import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 
 interface Props {
   category: string;
   listings: any[];
+  refresh: number;
 }
-const Listing = ({ category, listings: items }: Props) => {
+const Listing = ({ category, listings: items, refresh }: Props) => {
   const [loading, setLoading] = useState(false);
-  const listRef = useRef<FlatList>(null);
+  const listRef = useRef<FlatList>(null); 
 
   useEffect(() => {
-    console.log("reload listing", category, items.length);
+    if (refresh) {
+      listRef.current?.scrollToOffset({ offset: 0, animated: true });
+    }
+  }, [refresh]);
+
+  useEffect(() => {
     setLoading(true);
 
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 0);
   }, [category]);
 
-  const renderRow: ListRenderItem<listing> = ({ item }) => (
+  const renderRow: ListRenderItem<ListingData> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
         <Animated.View
@@ -72,6 +75,9 @@ const Listing = ({ category, listings: items }: Props) => {
         ref={listRef}
         data={loading ? [] : items}
         renderItem={renderRow}
+        ListHeaderComponent={
+          <Text style={styles.info}>{items.length} homes</Text>
+        }
       />
     </View>
   );
@@ -83,7 +89,7 @@ const styles = StyleSheet.create({
   listing: {
     padding: 16,
     gap: 10,
-    marginVertical: 16,
+    marginVertical: 20,
   },
 
   image: {
@@ -118,5 +124,12 @@ const styles = StyleSheet.create({
 
   priceContainer: {
     flexDirection: "row",
+  },
+
+  info: {
+    textAlign: "center",
+    fontFamily: "mon-sb",
+    fontSize: 16,
+    marginTop: 4,
   },
 });
