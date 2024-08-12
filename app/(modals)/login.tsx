@@ -2,9 +2,9 @@ import LoginButton from "@/components/LoginButton";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/styles";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
-import { useOAuth } from "@clerk/clerk-expo";
+import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -49,6 +49,14 @@ const Page = () => {
       console.error("OAuth error:", err);
     }
   };
+
+  const { isSignedIn } = useAuth();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      router.back();
+    }
+  }, [isSignedIn]);
 
   return (
     <View style={styles.container}>

@@ -1,15 +1,15 @@
 import Colors from "@/constants/Colors";
+import { defaultStyles } from "@/constants/styles";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { Link } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
-  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -67,7 +67,7 @@ const ExploreHeader = ({ onCategoryChange }: Props) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView style={defaultStyles.safeAreaContainer}>
       <View style={styles.container}>
         <View style={styles.actionRow}>
           <Link href={"(modals)/booking"} asChild>
@@ -127,15 +127,11 @@ const ExploreHeader = ({ onCategoryChange }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  safeAreaContainer: {
-    flex: 1,
-    backgroundColor: "#FFF",
-    paddingTop: Platform.OS === "android" ? 50 : 0,
-  },
   container: {
     backgroundColor: "#FFF",
     height: 130,
   },
+
   actionRow: {
     flexDirection: "row",
     alignItems: "center",

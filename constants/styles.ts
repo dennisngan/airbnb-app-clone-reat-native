@@ -1,10 +1,16 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import Colors from "./Colors";
 
 export const defaultStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FDFFFF",
+  },
+
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: "#FFF",
+    paddingTop: Platform.OS === "android" ? 50 : 0,
   },
 
   inputField: {
@@ -17,6 +23,7 @@ export const defaultStyles = StyleSheet.create({
   },
 
   btn: {
+    flexDirection: "row",
     backgroundColor: Colors.primary,
     height: 50,
     borderRadius: 8,

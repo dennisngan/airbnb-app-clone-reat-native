@@ -1,3 +1,5 @@
+import ModalHeaderText from "@/components/ModalHeaderText";
+import Colors from "@/constants/Colors";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -6,7 +8,7 @@ import { Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { TouchableOpacity } from "react-native";
+import { Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 
@@ -122,9 +124,15 @@ function RootLayoutNav() {
         name="(modals)/booking"
         options={{
           presentation: "transparentModal",
+          headerTransparent: true,
+          headerTitle: () => <ModalHeaderText />,
+          headerBackVisible: false,
           animation: "fade",
           headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={styles.closeHeaderContainer}
+            >
               <Ionicons name="close-outline" size={24} />
             </TouchableOpacity>
           ),
@@ -133,3 +141,14 @@ function RootLayoutNav() {
     </Stack>
   );
 }
+
+const styles = StyleSheet.create({
+  closeHeaderContainer: {
+    backgroundColor: "#FFF",
+    borderColor: Colors.grey,
+    borderRadius: 20,
+    borderWidth: 1,
+    padding: 4,
+    marginRight: Platform.OS === "android" ? 100 : 0,
+  },
+});
