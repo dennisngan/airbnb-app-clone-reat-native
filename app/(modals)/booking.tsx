@@ -16,13 +16,16 @@ import Animated, {
   FadeOut,
   SlideInDown,
 } from "react-native-reanimated";
+//@ts-ignore
+import DatePicker from "react-native-modern-datepicker";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 const Page = () => {
   const router = useRouter();
-  const [openCard, setOpenCard] = useState(0);
+  const [openCard, setOpenCard] = useState(1);
   const [selectedPlace, setSelectedPlace] = useState(0);
+  const today = new Date().toISOString().substring(0, 10);
 
   const onClearAll = () => {
     setSelectedPlace(0);
@@ -111,12 +114,27 @@ const Page = () => {
             <Text style={styles.previewDate}>Any Week</Text>
           </AnimatedTouchableOpacity>
         )}
+
         {openCard === 1 && (
           <>
             <Animated.Text entering={FadeIn} style={styles.cardHeader}>
               Where to?
             </Animated.Text>
-            <Animated.View style={styles.cardBody}></Animated.View>
+            <Animated.View style={styles.cardBody}>
+              <DatePicker
+                options={{
+                  defaultFont: "mon",
+                  headerFont: "mon-sb",
+                  backgroundColor: "#FFF",
+                  mainColor: Colors.primary,
+                  borderColor: "transparent",
+                }}
+                current={today}
+                selected={today}
+                mode="calendar"
+                style={{ borderRadius: 10 }}
+              />
+            </Animated.View>
           </>
         )}
       </View>
