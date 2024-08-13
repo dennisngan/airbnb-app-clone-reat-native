@@ -21,15 +21,62 @@ import DatePicker from "react-native-modern-datepicker";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
+
+const guestsGroups = [
+  {
+    name: "Adults",
+    text: "Ages 13 or above",
+    count: 0,
+  },
+  {
+    name: "Children",
+    text: "Ages 2-12",
+    count: 0,
+  },
+  {
+    name: "Infants",
+    text: "Under 2",
+    count: 0,
+  },
+  {
+    name: "Pets",
+    text: "Pets allowed",
+    count: 0,
+  },
+];
+
 const Page = () => {
   const router = useRouter();
-  const [openCard, setOpenCard] = useState(1);
+  const [openCard, setOpenCard] = useState(0);
   const [selectedPlace, setSelectedPlace] = useState(0);
   const today = new Date().toISOString().substring(0, 10);
+  const [groups, setGroups] = useState(guestsGroups);
 
   const onClearAll = () => {
     setSelectedPlace(0);
     setOpenCard(0);
+    setGroups(guestsGroups);
+  };
+
+  const renderBorder = (index: number) => {
+    return index + 1 === groups.length ? null : styles.itemBorder;
+  };
+
+  const handleGroupColor = (index: number) => {
+    return groups[index].count > 0 ? Colors.grey : "#CDCDCD";
+  };
+
+  const handleGroupCountChange = (index: number, add: boolean) => {
+    setGroups((prev) => {
+      if (add && prev[index].count < 10) {
+        prev[index].count++;
+      }
+
+      if (!add && prev[index].count > 0) {
+        prev[index].count--;
+      }
+      return [...prev];
+    });
   };
 
   return (
@@ -123,7 +170,7 @@ const Page = () => {
             <Animated.View style={styles.cardBody}>
               <DatePicker
                 options={{
-                  defaultFont: "mon",
+                  fontFamily: "mon",
                   headerFont: "mon-sb",
                   backgroundColor: "#FFF",
                   mainColor: Colors.primary,
@@ -157,7 +204,37 @@ const Page = () => {
             <Animated.Text entering={FadeIn} style={styles.cardHeader}>
               Who's coming?
             </Animated.Text>
-            <Animated.View style={styles.cardBody}></Animated.View>
+            <Animated.View style={styles.cardBody}>
+              {groups.map((item, index) => (
+                <View style={[styles.guestItem, renderBorder(index)]}>
+                  <View>
+                    <Text style={styles.groupTextTitle}>{item.name}</Text>
+                    <Text style={styles.groupTextDescription}>{item.text}</Text>
+                  </View>
+                  <View style={styles.groupsBtn}>
+                    <TouchableOpacity
+                      onPress={() => handleGroupCountChange(index, false)}
+                    >
+                      <Ionicons
+                        name="remove-circle-outline"
+                        size={26}
+                        color={handleGroupColor(index)}
+                      />
+                    </TouchableOpacity>
+                    <Text style={styles.countText}>{item.count}</Text>
+                    <TouchableOpacity
+                      onPress={() => handleGroupCountChange(index, true)}
+                    >
+                      <Ionicons
+                        name="add-circle-outline"
+                        size={26}
+                        color={Colors.grey}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </Animated.View>
           </>
         )}
       </View>
@@ -295,5 +372,39 @@ const styles = StyleSheet.create({
   selectedPlaceTitle: {
     fontFamily: "mon-sb",
     paddingTop: 6,
+  },
+
+  guestItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 16,
+  },
+
+  itemBorder: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: Colors.grey,
+  },
+
+  groupsBtn: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  groupTextTitle: {
+    fontFamily: "mon-sb",
+    fontSize: 14,
+  },
+
+  groupTextDescription: {
+    fontFamily: "mon",
+    fontSize: 14,
+  },
+  countText: {
+    width: 20,
+    textAlign: "center",
+    fontFamily: "mon",
   },
 });
